@@ -57,15 +57,6 @@ namespace CatWorx.BadgeMaker
             int EMPLOYEE_NAME_Y = 600;
             int EMPLOYEE_ID_Y = 730;
 
-            // Values needed for adding the company name text to the badge
-            SKPaint paint = new SKPaint();
-            paint.TextSize = 42.0f;
-            paint.IsAntialias = true;
-            paint.Color = SKColors.White;
-            paint.IsStroke = false;
-            paint.TextAlign = SKTextAlign.Center;
-            paint.Typeface = SKTypeface.FromFamilyName("Arial");
-
             // instance of HttpClient is disposed after code in the block has run
             using (HttpClient client = new HttpClient())
             {
@@ -85,20 +76,29 @@ namespace CatWorx.BadgeMaker
                     // allows us to insert imployee photo onto the SKCanvas object with specific coordinates and size dimensions
                     canvas.DrawImage(photo, new SKRect(PHOTO_LEFT_X, PHOTO_TOP_Y, PHOTO_RIGHT_X, PHOTO_BOTTOM_Y));
 
-                    SKImage finalImage = SKImage.FromBitmap(badge);
-                    SKData data = finalImage.Encode();
-                    
-                    // save badge file as a different file for each employee
-                    string template = "data/{0}_badge.png";
-                    data.SaveTo(File.OpenWrite(string.Format(template, employees[i].GetId())));
+                    // Values needed for adding the company name text to the badge
+                    SKPaint paint = new SKPaint();
+                    paint.TextSize = 42.0f;
+                    paint.IsAntialias = true;
+                    paint.Color = SKColors.White;
+                    paint.IsStroke = false;
+                    paint.TextAlign = SKTextAlign.Center;
+                    paint.Typeface = SKTypeface.FromFamilyName("Arial");
 
                     // Company name & Employee Name
                     canvas.DrawText(employees[i].GetCompanyName(), BADGE_WIDTH / 2f, COMPANY_NAME_Y, paint);
                     canvas.DrawText(employees[i].GetFullName(), BADGE_WIDTH / 2f, EMPLOYEE_NAME_Y, paint);
-                    
+
                     paint.Typeface = SKTypeface.FromFamilyName("Courier New");
                     // Employee Id
                     canvas.DrawText(employees[i].GetId().ToString(), BADGE_WIDTH / 2f, EMPLOYEE_ID_Y, paint);
+
+                    SKImage finalImage = SKImage.FromBitmap(badge);
+                    SKData data = finalImage.Encode();
+
+                    // save badge file as a different file for each employee
+                    string template = "data/{0}_badge.png";
+                    data.SaveTo(File.OpenWrite(string.Format(template, employees[i].GetId())));
                 }
             }
         }
