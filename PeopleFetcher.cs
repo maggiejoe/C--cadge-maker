@@ -25,6 +25,11 @@ namespace CatWorx.BadgeMaker
                     break;
                 }
 
+                // Ask user if they would like to fetch data from the API or create their own emmployee
+                Console.WriteLine("Would you like to fetch API data or input an Employee manually?");
+                bool choice = true;
+                Console.ReadLine(choice);
+                
                 // Collect last name
                 Console.WriteLine("Please enter last name: ");
                 string lastName = Console.ReadLine() ?? "";
@@ -64,10 +69,6 @@ namespace CatWorx.BadgeMaker
                     );
                     employees.Add(emp);
                 }
-                // for(int i = 0; i < employees.Count; i++) {
-                //     string name = name.SelectToken("name.first");
-                //     Console.WriteLine(json.SelectToken("results[i].name.first"));
-                // }
             }
 
             return employees;
