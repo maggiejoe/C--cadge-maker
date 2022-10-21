@@ -85,8 +85,13 @@ namespace CatWorx.BadgeMaker
                     paint.TextAlign = SKTextAlign.Center;
                     paint.Typeface = SKTypeface.FromFamilyName("Arial");
 
-                    // Company name & Employee Name
+                    // Company name
                     canvas.DrawText(employees[i].GetCompanyName(), BADGE_WIDTH / 2f, COMPANY_NAME_Y, paint);
+                    
+                    // ensures employee name and id are in black text rather than white
+                    paint.Color = SKColors.Black;
+
+                    // Employee name
                     canvas.DrawText(employees[i].GetFullName(), BADGE_WIDTH / 2f, EMPLOYEE_NAME_Y, paint);
 
                     paint.Typeface = SKTypeface.FromFamilyName("Courier New");

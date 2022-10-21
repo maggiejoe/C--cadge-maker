@@ -8,7 +8,7 @@ namespace CatWorx.BadgeMaker
         public string PhotoUrl;
         public string GetCompanyName()
         {
-            return "Cat Worx";
+            return " Cat Worx";
         }
         public Employee(string firstName, string lastName, int id, string photoUrl) {
             FirstName = firstName;
