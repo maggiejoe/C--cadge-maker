@@ -39,14 +39,32 @@ namespace CatWorx.BadgeMaker
 
         async public static Task MakeBadges(List<Employee> employees)
         {
-            // Layout variables
+            // Layout variables in pixels
+            // Full badge sizes
             int BADGE_WIDTH = 669;
             int BADGE_HEIGHT = 1044;
 
+            // Image sizes
             int PHOTO_LEFT_X = 184;
             int PHOTO_TOP_Y = 215;
             int PHOTO_RIGHT_X = 486;
             int PHOTO_BOTTOM_Y = 517;
+
+            // company name sizes
+            int COMPANY_NAME_Y = 150;
+
+            // employe info sizes
+            int EMPLOYEE_NAME_Y = 600;
+            int EMPLOYEE_ID_Y = 730;
+
+            // Values needed for adding the company name text to the badge
+            SKPaint paint = new SKPaint();
+            paint.TextSize = 42.0f;
+            paint.IsAntialias = true;
+            paint.Color = SKColors.White;
+            paint.IsStroke = false;
+            paint.TextAlign = SKTextAlign.Center;
+            paint.Typeface = SKTypeface.FromFamilyName("Arial");
 
             // instance of HttpClient is disposed after code in the block has run
             using (HttpClient client = new HttpClient())
@@ -63,14 +81,24 @@ namespace CatWorx.BadgeMaker
                     // First two arguments in SKRect indicate the coordinates for the upper-left corner of the rectangle on an x&y axis beginning with the x axis
                     // Following two arguments indicate the coordinates for the lower right corner of the rectangle on the x & y axix beginning with the x axis
                     canvas.DrawImage(background, new SKRect(0, 0, BADGE_WIDTH, BADGE_HEIGHT));
-                    
+
                     // allows us to insert imployee photo onto the SKCanvas object with specific coordinates and size dimensions
-                    canvas.DrawImage(photo, new SKRect(PHOTO_LEFT_X, PHOTO_TOP_Y, PHOTO_RIGHT_X, PHOTO_BOTTOM_Y));    
-                    
+                    canvas.DrawImage(photo, new SKRect(PHOTO_LEFT_X, PHOTO_TOP_Y, PHOTO_RIGHT_X, PHOTO_BOTTOM_Y));
+
                     SKImage finalImage = SKImage.FromBitmap(badge);
                     SKData data = finalImage.Encode();
-                    data.SaveTo(File.OpenWrite("data/employeeBadge.png"));
+                    
+                    // save badge file as a different file for each employee
+                    string template = "data/{0}_badge.png";
+                    data.SaveTo(File.OpenWrite(string.Format(template, employees[i].GetId())));
 
+                    // Company name & Employee Name
+                    canvas.DrawText(employees[i].GetCompanyName(), BADGE_WIDTH / 2f, COMPANY_NAME_Y, paint);
+                    canvas.DrawText(employees[i].GetFullName(), BADGE_WIDTH / 2f, EMPLOYEE_NAME_Y, paint);
+                    
+                    paint.Typeface = SKTypeface.FromFamilyName("Courier New");
+                    // Employee Id
+                    canvas.DrawText(employees[i].GetId().ToString(), BADGE_WIDTH / 2f, EMPLOYEE_ID_Y, paint);
                 }
             }
         }
