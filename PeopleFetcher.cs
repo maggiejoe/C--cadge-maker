@@ -9,7 +9,7 @@ namespace CatWorx.BadgeMaker
     class PeopleFetcher
     {
         // Collects employee names as strings and adds them to a list
-        public static List<Employee> GetEmployees()
+        async public static Task<List<Employee>> GetEmployees()
         {
             List<Employee> employees = new List<Employee>();
             while (true)
@@ -24,11 +24,6 @@ namespace CatWorx.BadgeMaker
                 {
                     break;
                 }
-
-                // Ask user if they would like to fetch data from the API or create their own emmployee
-                Console.WriteLine("Would you like to fetch API data or input an Employee manually?");
-                bool choice = true;
-                Console.ReadLine(choice);
                 
                 // Collect last name
                 Console.WriteLine("Please enter last name: ");
